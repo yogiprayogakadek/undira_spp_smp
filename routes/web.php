@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->middleware(['auth'])->name('dashboard.chart-data');
 
