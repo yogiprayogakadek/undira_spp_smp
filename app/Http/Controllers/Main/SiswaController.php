@@ -31,6 +31,9 @@ class SiswaController extends Controller
                     return ucfirst($row->jenis_kelamin);
                 })
                 ->addColumn('actions', function ($row) {
+                    if (auth()->user()->role === 'kepala sekolah') {
+                        return '<span class="text-muted small">Read Only</span>';
+                    }
                     return '
                     <a href="' . route('siswa.show', $row->id) . '">
                         <button type="button"
@@ -64,6 +67,9 @@ class SiswaController extends Controller
 
     public function store(SiswaStoreRequest $request)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->siswaService->create($request->validated());
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan.');
@@ -78,6 +84,9 @@ class SiswaController extends Controller
 
     public function update(SiswaUpdateRequest $request, $id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->siswaService->update($id, $request->validated());
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui.');
@@ -85,6 +94,9 @@ class SiswaController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->siswaService->delete($id);
 
         return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus.');

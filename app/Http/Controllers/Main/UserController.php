@@ -39,6 +39,9 @@ class UserController extends Controller
                         : '<span class="badge bg-danger">Inactive</span>';
                 })
                 ->addColumn('actions', function ($row) {
+                    if (auth()->user()->role === 'kepala sekolah') {
+                        return '<span class="text-muted small">Read Only</span>';
+                    }
                     return '
                     <a href="' . route('user.show', $row->id) . '">
                         <button type="button"
@@ -63,6 +66,9 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $data = [
             'email' => $request->email,
             'password' => Hash::make('password'),
@@ -85,6 +91,9 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         try {
             $this->userService->update($id, $request->validated());
 
@@ -101,6 +110,9 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->userService->delete($id);
 
         return redirect()->route('user.index')->with('success', 'User deleted successfully');

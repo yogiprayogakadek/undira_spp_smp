@@ -69,10 +69,12 @@
                     <p class="card-subtitle mb-0 small text-muted">Semua transaksi pembayaran SPP</p>
                 </div>
             </div>
+            @if(auth()->user()->role !== 'kepala sekolah')
             <a href="{{ route('pembayaran-spp.create') }}" class="btn btn-primary hstack gap-2 px-4 shadow-sm">
                 <iconify-icon icon="solar:card-send-bold-duotone" class="fs-5"></iconify-icon>
                 <span class="d-none d-sm-inline">Catat Pembayaran</span>
             </a>
+            @endif
         </div>
         <div class="card-body px-3 pb-3">
             <div class="table-responsive">

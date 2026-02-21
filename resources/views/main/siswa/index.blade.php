@@ -95,10 +95,12 @@
                             <p class="card-subtitle mb-0 small text-muted">Manajemen data siswa seluruh kelas</p>
                         </div>
                     </div>
+                    @if(auth()->user()->role !== 'kepala sekolah')
                     <a href="{{ route('siswa.create') }}" class="btn btn-primary hstack gap-2 px-4 shadow-sm">
                         <iconify-icon icon="solar:user-plus-bold-duotone" class="fs-5"></iconify-icon>
                         <span class="d-none d-sm-inline">Tambah Siswa</span>
                     </a>
+                    @endif
                 </div>
                 <div class="card-body px-3 pb-3">
                     <div class="table-responsive">

@@ -40,12 +40,18 @@ class PembayaranSppController extends Controller
                     return "<span class='badge bg-{$color}-subtle text-{$color} border border-{$color}-subtle px-2 fw-semibold'>{$label}</span>";
                 })
                 ->addColumn('actions', function ($row) {
-                    return '
+                    $btnDetail = '
                     <a href="' . route('pembayaran-spp.show', $row->id) . '">
                         <button type="button" class="justify-content-center w-80 btn mb-1 bg-primary-subtle text-primary">
                             <i class="ti ti-eye fs-4 me-2"></i> Detail
                         </button>
-                    </a>
+                    </a>';
+
+                    if (auth()->user()->role === 'kepala sekolah') {
+                        return $btnDetail;
+                    }
+
+                    return $btnDetail . '
                     <form action="' . route('pembayaran-spp.delete', $row->id) . '" method="POST" style="display:inline"
                         onsubmit="return confirm(\'Batalkan pembayaran ini? Status tagihan akan dikembalikan.\')">
                         ' . csrf_field() . method_field('DELETE') . '
@@ -77,6 +83,9 @@ class PembayaranSppController extends Controller
 
     public function store(PembayaranSppStoreRequest $request)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $data      = $request->only(['siswa_id', 'tanggal_bayar', 'metode_bayar', 'catatan']);
         $data['user_id'] = Auth::id();
         $tagihanIds = $request->input('tagihan_ids', []);
@@ -98,6 +107,9 @@ class PembayaranSppController extends Controller
 
     public function delete($id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         try {
             $this->pembayaranSppService->delete($id);
             return redirect()->route('pembayaran-spp.index')

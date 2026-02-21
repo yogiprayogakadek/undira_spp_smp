@@ -13,8 +13,8 @@
 
             <div class="d-block d-lg-none">
                 <span class="fw-bold fs-5 text-dark"
-                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Mal
-                    Bali Galeria</span>
+                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+                    SMPN 1 Mauponggo Satap</span>
             </div>
             <a class="navbar-toggler p-0 border-0 nav-icon-hover" href="javascript:void(0)" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -42,7 +42,7 @@
                             <a class="nav-link" href="javascript:void(0)" id="drop1" aria-expanded="false">
                                 <div class="d-flex align-items-center gap-2 lh-base">
                                     <img src="{{ Auth::user()->avatar ?? 'https://bootstrapdemos.wrappixel.com/materialM/dist/assets/images/profile/user-1.jpg' }}"
-                                        class="rounded-circle" width="35" height="35" alt="malbaligaleria" />
+                                        class="rounded-circle" width="35" height="35" alt="user" />
                                 </div>
                             </a>
                             <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="d-flex align-items-center py-9 mx-7 border-bottom">
                                         <img src="{{ Auth::user()->avatar ?? 'https://bootstrapdemos.wrappixel.com/materialM/dist/assets/images/profile/user-1.jpg' }}"
-                                            class="rounded-circle" width="80" height="80" alt="malbaligaleria" />
+                                            class="rounded-circle" width="80" height="80" alt="user" />
                                         <div class="ms-3">
                                             <h5 class="mb-0 fs-4">{{ ucwords(Auth::user()->role) }}</h5>
                                             {{-- <span class="mb-1 d-block">Administrator</span> --}}
@@ -142,8 +142,8 @@
                 <li class="nav-item d-none d-xl-block">
                     <a href="{{ url('/') }}" class="text-nowrap nav-link">
                         <span class="fw-bold fs-5 text-dark"
-                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Mal
-                            Bali Galeria</span>
+                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+                            SMPN 1 Mauponggo Satap</span>
                     </a>
                 </li>
 
@@ -151,8 +151,8 @@
             <div class="d-block d-xl-none">
                 <a href="{{ url('/') }}" class="text-nowrap nav-link">
                     <span class="fw-bold fs-5 text-dark"
-                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Mal
-                        Bali Galeria</span>
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+                        SMPN 1 Mauponggo Satap</span>
                 </a>
             </div>
             <a class="navbar-toggler nav-icon-hover p-0 border-0" href="javascript:void(0)" data-bs-toggle="collapse"
@@ -299,7 +299,7 @@
                                 aria-expanded="false">
                                 <div class="d-flex align-items-center gap-2 lh-base">
                                     <img src="https://bootstrapdemos.wrappixel.com/materialM/dist/assets/images/profile/user-1.jpg"
-                                        class="rounded-circle" width="35" height="35" alt="malbaligaleria" />
+                                        class="rounded-circle" width="35" height="35" alt="user" />
                                 </div>
                             </a>
                             <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
@@ -311,7 +311,7 @@
                                     <div class="d-flex align-items-center py-9 mx-7 border-bottom">
                                         <img src="https://bootstrapdemos.wrappixel.com/materialM/dist/assets/images/profile/user-1.jpg"
                                             class="rounded-circle" width="80" height="80"
-                                            alt="malbaligaleria" />
+                                            alt="user" />
                                         <div class="ms-3">
                                             <h5 class="mb-0 fs-4">Jonathan Deo</h5>
                                             <span class="mb-1 d-block">Admin</span>

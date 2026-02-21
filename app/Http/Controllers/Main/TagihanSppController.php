@@ -64,6 +64,9 @@ class TagihanSppController extends Controller
 
     public function generate(Request $request)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $request->validate([
             'siswa_id'     => 'required|integer|exists:siswa,id',
             'tahun_ajaran' => 'required|regex:/^\d{4}\/\d{4}$/',

@@ -23,6 +23,9 @@ class TarifSppController extends Controller
                 ->addColumn('tingkat_label', fn ($row) => 'Kelas ' . $row->tingkat)
                 ->addColumn('nominal_fmt', fn ($row) => 'Rp ' . number_format($row->nominal, 0, ',', '.'))
                 ->addColumn('actions', function ($row) {
+                    if (auth()->user()->role === 'kepala sekolah') {
+                        return '<span class="text-muted small">Read Only</span>';
+                    }
                     return '
                     <a href="' . route('tarif-spp.show', $row->id) . '">
                         <button type="button" class="justify-content-center w-80 btn mb-1 bg-primary-subtle text-primary">
@@ -52,6 +55,9 @@ class TarifSppController extends Controller
 
     public function store(TarifSppStoreRequest $request)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->tarifSppService->create($request->validated());
         return redirect()->route('tarif-spp.index')->with('success', 'Tarif SPP berhasil ditambahkan.');
     }
@@ -64,12 +70,18 @@ class TarifSppController extends Controller
 
     public function update(TarifSppUpdateRequest $request, $id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->tarifSppService->update($id, $request->validated());
         return redirect()->route('tarif-spp.index')->with('success', 'Tarif SPP berhasil diperbarui.');
     }
 
     public function delete($id)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $this->tarifSppService->delete($id);
         return redirect()->route('tarif-spp.index')->with('success', 'Tarif SPP berhasil dihapus.');
     }

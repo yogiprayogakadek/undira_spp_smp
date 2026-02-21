@@ -23,6 +23,9 @@ class KelasController extends Controller
                     return 'Kelas ' . $row->tingkat;
                 })
                 ->addColumn('actions', function ($row) {
+                    if (auth()->user()->role === 'kepala sekolah') {
+                        return '<span class="text-muted small">Read Only</span>';
+                    }
                     return '
                     <a href="' . route('kelas.show', $row->id) . '">
                         <button type="button"
@@ -47,6 +50,9 @@ class KelasController extends Controller
 
     public function store(KelasStoreRequest $request)
     {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
         $data = [
             'nama' => $request->grade . ' ' . $request->nama,
             'tingkat' => $request->tingkat
