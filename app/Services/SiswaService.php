@@ -32,4 +32,9 @@ class SiswaService
     {
         return $this->siswaRepository->delete($id);
     }
+
+    public function getByKelas(int $kelasId)
+    {
+        return $this->siswaRepository->getByKelas($kelasId);
+    }
 }

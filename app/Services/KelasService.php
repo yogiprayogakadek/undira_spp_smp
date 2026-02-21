@@ -32,4 +32,9 @@ class KelasService
     {
         return $this->kelasRepository->delete($id);
     }
+
+    public function getByTingkat(int $tingkat)
+    {
+        return $this->kelasRepository->getByTingkat($tingkat);
+    }
 }

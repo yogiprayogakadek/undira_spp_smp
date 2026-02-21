@@ -74,21 +74,43 @@
         <div class="card-body px-4 py-3">
             <form action="{{ route('tagihan-spp.generate') }}" method="POST" class="row g-3 align-items-end">
                 @csrf
-                <div class="col-md-5">
+                <div class="col-md-3">
+                    <label for="tingkat" class="form-label fw-semibold small text-uppercase text-muted">Tingkat</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted">
+                            <iconify-icon icon="solar:sort-by-time-bold-duotone" style="font-size:18px"></iconify-icon>
+                        </span>
+                        <select id="tingkat" class="form-select border-start-0 ps-0 bg-light">
+                            <option value="">— Tingkat —</option>
+                            <option value="7">Kelas 7</option>
+                            <option value="8">Kelas 8</option>
+                            <option value="9">Kelas 9</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="kelas_id" class="form-label fw-semibold small text-uppercase text-muted">Kelas</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted">
+                            <iconify-icon icon="solar:users-group-rounded-bold-duotone" style="font-size:18px"></iconify-icon>
+                        </span>
+                        <select id="kelas_id" class="form-select border-start-0 ps-0 bg-light" disabled>
+                            <option value="">— Pilih Kelas —</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <label for="siswa_id" class="form-label fw-semibold small text-uppercase text-muted">Siswa</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0 text-muted">
                             <iconify-icon icon="solar:user-bold-duotone" style="font-size:18px"></iconify-icon>
                         </span>
-                        <select name="siswa_id" id="siswa_id" class="form-select border-start-0 ps-0 bg-light">
+                        <select name="siswa_id" id="siswa_id" class="form-select border-start-0 ps-0 bg-light" disabled>
                             <option value="">— Pilih Siswa —</option>
-                            @foreach($siswa as $s)
-                                <option value="{{ $s->id }}">{{ $s->nama_lengkap }}</option>
-                            @endforeach
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="tahun_ajaran" class="form-label fw-semibold small text-uppercase text-muted">Tahun Ajaran</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0 text-muted">
@@ -99,10 +121,10 @@
                             placeholder="2025/2026" value="{{ date('Y') . '/' . (date('Y')+1) }}">
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-info w-100 hstack justify-content-center gap-2 text-white shadow-sm">
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-info px-5 hstack justify-content-center gap-2 text-white shadow-sm">
                         <iconify-icon icon="solar:magic-stick-bold-duotone" class="fs-5"></iconify-icon>
-                        Generate 12 Bulan
+                        Generate 12 Bulan Tagihan
                     </button>
                 </div>
             </form>
@@ -179,6 +201,47 @@
                 document.getElementById('stat-belum').textContent   = belum;
                 document.getElementById('stat-sebagian').textContent = sebagian;
                 document.getElementById('stat-lunas').textContent   = lunas;
+            });
+
+            // Dependent Dropdown Logic
+            const tingkatSelect = document.getElementById('tingkat');
+            const kelasSelect   = document.getElementById('kelas_id');
+            const siswaSelect   = document.getElementById('siswa_id');
+
+            tingkatSelect.addEventListener('change', function () {
+                const tingkat = this.value;
+                kelasSelect.innerHTML = '<option value="">— Pilih Kelas —</option>';
+                siswaSelect.innerHTML = '<option value="">— Pilih Siswa —</option>';
+                kelasSelect.disabled  = true;
+                siswaSelect.disabled  = true;
+
+                if (tingkat) {
+                    fetch(`{{ route('tagihan-spp.get-kelas') }}?tingkat=${tingkat}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            data.forEach(k => {
+                                kelasSelect.innerHTML += `<option value="${k.id}">${k.nama}</option>`;
+                            });
+                            kelasSelect.disabled = false;
+                        });
+                }
+            });
+
+            kelasSelect.addEventListener('change', function () {
+                const kelasId = this.value;
+                siswaSelect.innerHTML = '<option value="">— Pilih Siswa —</option>';
+                siswaSelect.disabled  = true;
+
+                if (kelasId) {
+                    fetch(`{{ route('tagihan-spp.get-siswa') }}?kelas_id=${kelasId}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            data.forEach(s => {
+                                siswaSelect.innerHTML += `<option value="${s.id}">${s.nama_lengkap}</option>`;
+                            });
+                            siswaSelect.disabled = false;
+                        });
+                }
             });
         });
     </script>

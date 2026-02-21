@@ -55,8 +55,8 @@
                                         <img src="{{ Auth::user()->avatar ?? 'https://bootstrapdemos.wrappixel.com/materialM/dist/assets/images/profile/user-1.jpg' }}"
                                             class="rounded-circle" width="80" height="80" alt="malbaligaleria" />
                                         <div class="ms-3">
-                                            <h5 class="mb-0 fs-4">{{ Auth::user()->name ?? 'Yogi Prayoga' }}</h5>
-                                            <span class="mb-1 d-block">Administrator</span>
+                                            <h5 class="mb-0 fs-4">{{ ucwords(Auth::user()->role) }}</h5>
+                                            {{-- <span class="mb-1 d-block">Administrator</span> --}}
                                             <p class="mb-0 d-flex align-items-center gap-2">
                                                 <i class="ti ti-mail fs-4"></i>
                                                 {{ Auth::user()->email ?? 'admin@gmail.com' }}
@@ -105,17 +105,17 @@
                                         </a> --}}
                                     </div>
                                     <div class="d-grid py-4 px-7 pt-8">
-                                        <a href="javascript:void(0)"
+                                        {{-- <a href="javascript:void(0)"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit()"
-                                            class="btn btn-primary">Log Out</a>
-                                        {{-- <a href="{{ route('logout') }}"
+                                            class="btn btn-primary">Log Out</a> --}}
+                                        <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit()"
                                             class="btn btn-primary">Log Out</a>
 
                                         <form id="logout-form" method="POST" action="{{ route('logout') }}"
                                             class="d-none">
                                             @csrf
-                                        </form> --}}
+                                        </form>
                                     </div>
                                 </div>
                             </div>

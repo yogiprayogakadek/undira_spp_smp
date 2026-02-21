@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Services\KelasService;
 use App\Services\SiswaService;
 use App\Services\TagihanSppService;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class TagihanSppController extends Controller
     public function __construct(
         protected TagihanSppService $tagihanSppService,
         protected SiswaService      $siswaService,
+        protected KelasService      $kelasService,
     ) {}
 
     public function index(Request $request)
@@ -39,8 +41,25 @@ class TagihanSppController extends Controller
                 ->make(true);
         }
 
-        $siswa = $this->siswaService->getAll(['id', 'nama_lengkap', 'kelas_id']);
-        return view('main.tagihan_spp.index', compact('siswa'));
+        return view('main.tagihan_spp.index');
+    }
+
+    public function getKelas(Request $request)
+    {
+        $tingkat = $request->tingkat;
+        if (!$tingkat) return response()->json([]);
+        
+        $kelas = $this->kelasService->getByTingkat((int)$tingkat);
+        return response()->json($kelas);
+    }
+
+    public function getSiswa(Request $request)
+    {
+        $kelasId = $request->kelas_id;
+        if (!$kelasId) return response()->json([]);
+
+        $siswa = $this->siswaService->getByKelas((int)$kelasId);
+        return response()->json($siswa);
     }
 
     public function generate(Request $request)

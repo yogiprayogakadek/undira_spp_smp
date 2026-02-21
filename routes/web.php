@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Main\DashboardController;
 use App\Http\Controllers\Main\KelasController;
 use App\Http\Controllers\Main\PembayaranSppController;
 use App\Http\Controllers\Main\SiswaController;
@@ -49,6 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::controller(TagihanSppController::class)->prefix('/tagihan-spp')->name('tagihan-spp.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/generate', 'generate')->name('generate');
+        Route::get('/get-kelas', 'getKelas')->name('get-kelas');
+        Route::get('/get-siswa', 'getSiswa')->name('get-siswa');
     });
 
     Route::controller(PembayaranSppController::class)->prefix('/pembayaran-spp')->name('pembayaran-spp.')->group(function () {
@@ -62,9 +65,8 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->middleware(['auth'])->name('dashboard.chart-data');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -34,4 +34,9 @@ class SiswaRepository
         $user =  $this->model::find($id);
         return $user->delete();
     }
+
+    public function getByKelas(int $kelasId)
+    {
+        return $this->model::where('kelas_id', $kelasId)->get();
+    }
 }

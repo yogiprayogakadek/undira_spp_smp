@@ -34,4 +34,9 @@ class KelasRepository
         $user =  $this->model::find($id);
         return $user->delete();
     }
+
+    public function getByTingkat(int $tingkat)
+    {
+        return $this->model::where('tingkat', $tingkat)->get();
+    }
 }

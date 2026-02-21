@@ -24,12 +24,13 @@
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route('dashboard') }}" aria-expanded="false">
                             <iconify-icon icon="solar:home-smile-bold-duotone"></iconify-icon>
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
 
+                    @if(in_array(auth()->user()->role, ['admin', 'bendahara']))
                     {{-- ======= AKADEMIK ======= --}}
                     <li class="nav-small-cap mt-2">
                         <iconify-icon icon="solar:menu-dots-linear" class="mini-icon"></iconify-icon>
@@ -50,6 +51,7 @@
                                     <span class="hide-menu">Daftar Kelas</span>
                                 </a>
                             </li>
+                            @if(auth()->user()->role == 'admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('kelas.create') }}">
                                     <iconify-icon icon="solar:add-square-bold-duotone" class="icon-small"
@@ -57,6 +59,7 @@
                                     <span class="hide-menu">Tambah Kelas</span>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
 
@@ -74,6 +77,7 @@
                                     <span class="hide-menu">Daftar Siswa</span>
                                 </a>
                             </li>
+                            @if(auth()->user()->role == 'admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('siswa.create') }}">
                                     <iconify-icon icon="solar:user-plus-bold-duotone" class="icon-small"
@@ -81,8 +85,10 @@
                                     <span class="hide-menu">Tambah Siswa</span>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
+                    @endif
 
                     {{-- ======= KEUANGAN SPP ======= --}}
                     <li class="nav-small-cap mt-2">
@@ -91,6 +97,7 @@
                     </li>
 
                     {{-- Tarif SPP --}}
+                    @if(in_array(auth()->user()->role, ['admin', 'bendahara']))
                     <li class="sidebar-item">
                         <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                             <iconify-icon icon="solar:tag-price-bold-duotone"></iconify-icon>
@@ -104,6 +111,7 @@
                                     <span class="hide-menu">Daftar Tarif</span>
                                 </a>
                             </li>
+                            @if(auth()->user()->role == 'admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('tarif-spp.create') }}">
                                     <iconify-icon icon="solar:add-square-bold-duotone" class="icon-small"
@@ -111,8 +119,10 @@
                                     <span class="hide-menu">Tambah Tarif</span>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
+                    @endif
 
                     {{-- Tagihan SPP --}}
                     <li class="sidebar-item">
@@ -145,6 +155,7 @@
                                     <span class="hide-menu">Riwayat Pembayaran</span>
                                 </a>
                             </li>
+                            @if(in_array(auth()->user()->role, ['admin', 'bendahara']))
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('pembayaran-spp.create') }}">
                                     <iconify-icon icon="solar:card-send-bold-duotone" class="icon-small"
@@ -152,9 +163,11 @@
                                     <span class="hide-menu">Catat Pembayaran</span>
                                 </a>
                             </li>
+                            @endif
                         </ul>
                     </li>
 
+                    @if(auth()->user()->role == 'admin')
                     {{-- ======= ADMINISTRASI ======= --}}
                     <li class="nav-small-cap mt-2">
                         <iconify-icon icon="solar:menu-dots-linear" class="mini-icon"></iconify-icon>
@@ -184,6 +197,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
 
                 </ul>
             </nav>
