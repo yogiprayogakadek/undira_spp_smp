@@ -84,6 +84,77 @@
                         </ul>
                     </li>
 
+                    {{-- ======= KEUANGAN SPP ======= --}}
+                    <li class="nav-small-cap mt-2">
+                        <iconify-icon icon="solar:menu-dots-linear" class="mini-icon"></iconify-icon>
+                        <span class="hide-menu">Keuangan</span>
+                    </li>
+
+                    {{-- Tarif SPP --}}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <iconify-icon icon="solar:tag-price-bold-duotone"></iconify-icon>
+                            <span class="hide-menu">Tarif SPP</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse first-level">
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('tarif-spp.index') }}">
+                                    <iconify-icon icon="solar:list-bold-duotone" class="icon-small"
+                                        style="font-size:14px"></iconify-icon>
+                                    <span class="hide-menu">Daftar Tarif</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('tarif-spp.create') }}">
+                                    <iconify-icon icon="solar:add-square-bold-duotone" class="icon-small"
+                                        style="font-size:14px"></iconify-icon>
+                                    <span class="hide-menu">Tambah Tarif</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- Tagihan SPP --}}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <iconify-icon icon="solar:bill-list-bold-duotone"></iconify-icon>
+                            <span class="hide-menu">Tagihan SPP</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse first-level">
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('tagihan-spp.index') }}">
+                                    <iconify-icon icon="solar:list-bold-duotone" class="icon-small"
+                                        style="font-size:14px"></iconify-icon>
+                                    <span class="hide-menu">Daftar Tagihan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {{-- Pembayaran SPP --}}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <iconify-icon icon="solar:wallet-money-bold-duotone"></iconify-icon>
+                            <span class="hide-menu">Pembayaran SPP</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse first-level">
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('pembayaran-spp.index') }}">
+                                    <iconify-icon icon="solar:list-bold-duotone" class="icon-small"
+                                        style="font-size:14px"></iconify-icon>
+                                    <span class="hide-menu">Riwayat Pembayaran</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('pembayaran-spp.create') }}">
+                                    <iconify-icon icon="solar:card-send-bold-duotone" class="icon-small"
+                                        style="font-size:14px"></iconify-icon>
+                                    <span class="hide-menu">Catat Pembayaran</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     {{-- ======= ADMINISTRASI ======= --}}
                     <li class="nav-small-cap mt-2">
                         <iconify-icon icon="solar:menu-dots-linear" class="mini-icon"></iconify-icon>

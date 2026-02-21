@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder
             KelasSeeder::class,
             UserSeeder::class,
             SiswaSeeder::class,
+            TarifSppSeeder::class,
+            TagihanSppSeeder::class,
+            PembayaranSppSeeder::class,
         ]);
     }
 }

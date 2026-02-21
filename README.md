@@ -1,59 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏫 SI-PEMBAYARAN SPP - SMPN 1 MAUPONGGO SATAP
+
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php)](https://php.net)
+[![MySql](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql)](https://mysql.com)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap)](https://getbootstrap.com)
+
+Sistem Informasi Pembayaran SPP (Siswa Digital) yang dirancang khusus untuk **SMPN 1 Mauponggo Satap**. Aplikasi ini mempermudah pengelolaan data akademik, administrasi pengguna, dan manajemen keuangan sekolah secara terintegrasi dan modern.
+
+---
+
+## ✨ Fitur Utama
+
+### 🏦 Manajemen Keuangan (SPP)
+- **Master Tarif SPP**: Pengaturan biaya SPP per tingkat kelas (7, 8, 9) dan tahun ajaran.
+- **Auto-Generate Tagihan**: Fitur cerdas untuk membuat 12 bulan tagihan sekaligus bagi siswa baru atau naik kelas.
+- **Transaksi Pembayaran**: Pencatatan pembayaran multi-bulan dengan satu kali input.
+- **Kwitansi Digital**: Generate kwitansi resmi dengan nomor otomatis (`SPP-YYYY-XXXXX`) yang siap cetak.
+- **Dashboard Finansial**: Statistik pendapatan berdasarkan metode bayar (Tunai, Transfer, QRIS).
+
+### 🎓 Manajemen Akademik
+- **Data Siswa**: Pengelolaan profil lengkap siswa dengan tracking kelas.
+- **Data Kelas**: Pengelompokan siswa per grade (7, 8, 9) dengan statistik jumlah siswa real-time.
+
+### 👤 Administrasi & Keamanan
+- **Manajemen Pengguna**: Pengaturan akses bendahara dan petugas sekolah.
+- **Audit Trail**: Tracking petugas yang memproses setiap transaksi pembayaran.
+- **Data Trashed**: Sistem *soft-delete* untuk mengamankan data yang tidak sengaja terhapus.
+
+---
+
+## 🚀 Teknologi yang Digunakan
+
+- **Backend**: Laravel 11.x (PHP 8.2+)
+- **Frontend**: Blade Template Engine, Bootstrap 5.3
+- **Database**: MySQL 8.0 (Relational Schema)
+- **UI Architecture**: Corporate Elegant Theme, Glassmorphism elements.
+- **Assets**: 
+  - **Iconify**: Solar Icons Duotone (Modern & Premium look)
+  - **DataTables**: Server-side processing untuk performa optimal.
+  - **SweetAlert2 & Toastr**: Notifikasi interaktif dan elegan.
+
+---
+
+## 🛠️ Instalasi
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/username/si-pembayaran-spp.git
+   cd si-pembayaran-spp
+   ```
+
+2. **Composer Install**
+   ```bash
+   composer install
+   ```
+
+3. **Environment Setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   *Konfigurasi DB_DATABASE, DB_USERNAME, dan DB_PASSWORD di file .env*
+
+4. **Migrasi & Seeding**
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+
+5. **Jalankan Aplikasi**
+   ```bash
+   php artisan serve
+   ```
+
+---
+
+## 🛡️ Akun Akses Default
+
+- **URL**: `http://localhost:8000/login`
+- **Email**: `admin@gmail.com`
+- **Password**: `password`
+
+---
+
+## 📐 Struktur Alur Data
+
+1. **Pengaturan Tarif**: Admin menetapkan nominal SPP per tingkat per tahun ajaran.
+2. **Setup Siswa**: Input data siswa dan masukkan ke kelas yang sesuai.
+3. **Generate Tagihan**: Gunakan menu "Generate Tagihan" untuk membuat buku kas piutang siswa selama satu tahun.
+4. **Proses Bayar**: Bendahara mencari siswa, memilih bulan yang dibayar, dan mencetak kwitansi sebagai bukti sah.
+
+---
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  Dikelola oleh <b>Tim IT SMPN 1 Mauponggo Satap</b><br>
+  <i>"Modernizing Education Administration"</i>
 </p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

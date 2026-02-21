@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\Main\KelasController;
+use App\Http\Controllers\Main\PembayaranSppController;
 use App\Http\Controllers\Main\SiswaController;
+use App\Http\Controllers\Main\TagihanSppController;
+use App\Http\Controllers\Main\TarifSppController;
 use App\Http\Controllers\Main\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Kelas;
@@ -32,6 +35,29 @@ Route::middleware('auth')->group(function () {
         Route::get('/show/{id}', 'show')->name('show');
         Route::put('/update/{id}', 'update')->name('update');
         Route::delete('/delete/{id}', 'delete')->name('delete');
+    });
+
+    Route::controller(TarifSppController::class)->prefix('/tarif-spp')->name('tarif-spp.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::put('/update/{id}', 'update')->name('update');
+        Route::delete('/delete/{id}', 'delete')->name('delete');
+    });
+
+    Route::controller(TagihanSppController::class)->prefix('/tagihan-spp')->name('tagihan-spp.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/generate', 'generate')->name('generate');
+    });
+
+    Route::controller(PembayaranSppController::class)->prefix('/pembayaran-spp')->name('pembayaran-spp.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::delete('/delete/{id}', 'delete')->name('delete');
+        Route::get('/tagihan-siswa', 'getTagihanSiswa')->name('tagihan-siswa');
     });
 });
 
