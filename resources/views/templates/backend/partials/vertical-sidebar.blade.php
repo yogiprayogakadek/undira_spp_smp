@@ -167,6 +167,22 @@
                         </ul>
                     </li>
 
+                    {{-- Laporan SPP --}}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('laporan-spp.index') }}" aria-expanded="false">
+                            <iconify-icon icon="solar:document-bold-duotone"></iconify-icon>
+                            <span class="hide-menu">Laporan SPP</span>
+                        </a>
+                    </li>
+
+                    {{-- Panduan Pengguna --}}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('panduan.index') }}" aria-expanded="false">
+                            <iconify-icon icon="solar:question-square-bold-duotone"></iconify-icon>
+                            <span class="hide-menu">Panduan Pengguna</span>
+                        </a>
+                    </li>
+
                     @if(auth()->user()->role == 'admin')
                     {{-- ======= ADMINISTRASI ======= --}}
                     <li class="nav-small-cap mt-2">

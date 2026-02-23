@@ -3,6 +3,8 @@
 use App\Http\Controllers\Main\DashboardController;
 use App\Http\Controllers\Main\KelasController;
 use App\Http\Controllers\Main\PembayaranSppController;
+use App\Http\Controllers\Main\LaporanSppController;
+use App\Http\Controllers\Main\PanduanController;
 use App\Http\Controllers\Main\SiswaController;
 use App\Http\Controllers\Main\TagihanSppController;
 use App\Http\Controllers\Main\TarifSppController;
@@ -62,6 +64,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/delete/{id}', 'delete')->name('delete');
         Route::get('/tagihan-siswa', 'getTagihanSiswa')->name('tagihan-siswa');
     });
+
+    Route::controller(LaporanSppController::class)->prefix('/laporan-spp')->name('laporan-spp.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/preview', 'preview')->name('preview');
+        Route::get('/print', 'print')->name('print');
+    });
+
+    Route::get('/panduan', [PanduanController::class, 'index'])->name('panduan.index');
 });
 
 
