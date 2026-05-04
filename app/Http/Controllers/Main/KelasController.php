@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\KelasStoreRequest;
+use App\Http\Requests\KelasUpdateRequest;
 use App\Services\KelasService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -19,6 +20,21 @@ class KelasController extends Controller
 
             return DataTables::of($kelas)
                 ->addIndexColumn()
+                ->addColumn('nama', function ($row) {
+                    $nama = $row->nama;
+                    $angka = explode(' ', $nama);
+                    $list = [
+                        '7' => 'VII',
+                        '8' => 'VIII',
+                        '9' => 'IX'
+                    ];
+
+                    if (is_numeric($angka[0])) {
+                        $nama = $list[$angka[0]] . ' ' . $angka[1] ?? $row->nama;
+                    }
+
+                    return $nama;
+                })
                 ->addColumn('tingkat', function ($row) {
                     return 'Kelas ' . $row->tingkat;
                 })
@@ -67,5 +83,19 @@ class KelasController extends Controller
         $kelas = $this->kelasService->findById(['id', 'nama', 'tingkat'], $id);
 
         return view('main.kelas.update', compact('kelas'));
+    }
+
+    public function update(KelasUpdateRequest $request, $id)
+    {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
+        $data = [
+            'nama' => $request->grade . ' ' . $request->nama,
+            'tingkat' => $request->tingkat
+        ];
+
+        $this->kelasService->update($id, $data);
+        return redirect()->route('kelas.index')->with('success', 'Data kelas berhasil diperbarui.');
     }
 }

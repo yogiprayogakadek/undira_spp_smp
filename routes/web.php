@@ -10,7 +10,6 @@ use App\Http\Controllers\Main\TagihanSppController;
 use App\Http\Controllers\Main\TarifSppController;
 use App\Http\Controllers\Main\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Kelas;
 use Illuminate\Support\Facades\Route;
 
 
