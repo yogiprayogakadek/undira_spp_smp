@@ -52,7 +52,7 @@
                                 </a>
                             </li>
                             @if(auth()->user()->role == 'admin')
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" style="display: none;">
                                 <a class="sidebar-link" href="{{ route('kelas.create') }}">
                                     <iconify-icon icon="solar:add-square-bold-duotone" class="icon-small"
                                         style="font-size:14px"></iconify-icon>

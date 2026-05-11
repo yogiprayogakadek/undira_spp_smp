@@ -42,14 +42,22 @@ class KelasController extends Controller
                     if (auth()->user()->role === 'kepala sekolah') {
                         return '<span class="text-muted small">Read Only</span>';
                     }
+
+                    // Split nama to get grade and rombel
+                    $parts = explode(' ', $row->nama, 2);
+                    $grade = $parts[0] ?? '';
+                    $nama = $parts[1] ?? '';
+
                     return '
-                    <a href="' . route('kelas.show', $row->id) . '">
-                        <button type="button"
-                            class="justify-content-center w-80 btn mb-1 bg-primary-subtle text-primary">
-                            <i class="ti ti-pencil fs-4 me-2"></i>
-                            Edit
-                        </button>
-                    </a>
+                    <button type="button"
+                        class="btn-edit justify-content-center w-80 btn mb-1 bg-primary-subtle text-primary"
+                        data-id="' . $row->id . '"
+                        data-grade="' . $grade . '"
+                        data-nama="' . $nama . '"
+                        data-tingkat="' . $row->tingkat . '">
+                        <i class="ti ti-pencil fs-4 me-2"></i>
+                        Edit
+                    </button>
                     ';
                 })
                 ->rawColumns(['actions', 'tingkat'])
