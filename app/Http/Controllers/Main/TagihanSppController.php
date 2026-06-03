@@ -20,7 +20,7 @@ class TagihanSppController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $tagihan = $this->tagihanSppService->getAll(['*']);
+            $tagihan = $this->tagihanSppService->getAll(['*'], $request->query('siswa_id'), $request->query('kelas_id'), $request->query('tingkat'));
 
             return DataTables::of($tagihan)
                 ->addIndexColumn()
@@ -37,11 +37,26 @@ class TagihanSppController extends Controller
                     [$color, $label] = $map[$row->status] ?? ['secondary', $row->status];
                     return "<span class='badge bg-{$color}-subtle text-{$color} border border-{$color}-subtle px-2 fw-semibold'>{$label}</span>";
                 })
-                ->rawColumns(['status_badge'])
+                ->addColumn('actions', function ($row) {
+                    if (auth()->user()->role === 'kepala sekolah') {
+                        return '—';
+                    }
+                    if ($row->status !== 'belum_bayar') {
+                        return '<button class="btn btn-secondary btn-sm px-2 py-1 border-0" style="opacity:0.5; cursor:not-allowed;" title="Hanya tagihan belum bayar yang dapat diedit" disabled><iconify-icon icon="solar:pen-bold" class="align-middle"></iconify-icon></button>';
+                    }
+                    return '<button class="btn btn-warning btn-sm btn-edit text-white px-2 py-1 border-0 shadow-sm" data-id="'.$row->id.'" data-nominal="'.(float)$row->nominal.'" data-siswa="'.e($row->siswa?->nama_lengkap).'" data-periode="'.e(\App\Models\TagihanSpp::namaBulan($row->bulan) . ' ' . $row->tahun).'"><iconify-icon icon="solar:pen-bold" class="align-middle"></iconify-icon></button>';
+                })
+                ->rawColumns(['status_badge', 'actions'])
                 ->make(true);
         }
 
-        return view('main.tagihan_spp.index');
+        $filteredSiswa = $request->query('siswa_id') ? \App\Models\Siswa::find($request->query('siswa_id')) : null;
+        $kelasList = $this->kelasService->getAll(['id', 'nama', 'tingkat'])->sortBy([
+            ['tingkat', 'asc'],
+            ['nama', 'asc'],
+        ]);
+
+        return view('main.tagihan_spp.index', compact('filteredSiswa', 'kelasList'));
     }
 
     public function getKelas(Request $request)
@@ -88,10 +103,38 @@ class TagihanSppController extends Controller
             );
 
             $count = count($generated);
-            return redirect()->route('tagihan-spp.index')
+            return redirect()->route('tagihan-spp.index', ['siswa_id' => $siswa->id])
                 ->with('success', "{$count} tagihan SPP berhasil di-generate untuk {$siswa->nama_lengkap}.");
         } catch (\RuntimeException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (auth()->user()->role === 'kepala sekolah') {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $request->validate([
+            'nominal' => 'required|numeric|min:0',
+        ], [
+            'nominal.required' => 'Nominal wajib diisi.',
+            'nominal.numeric'  => 'Nominal harus berupa angka.',
+            'nominal.min'      => 'Nominal tidak boleh kurang dari 0.',
+        ]);
+
+        $tagihan = $this->tagihanSppService->findById(['id', 'status'], $id);
+
+        if ($tagihan->status !== 'belum_bayar') {
+            return redirect()->back()->with('error', 'Tagihan yang sudah dibayar tidak dapat diubah.');
+        }
+
+        $this->tagihanSppService->update($id, [
+            'nominal' => $request->nominal,
+        ]);
+
+        return redirect()->route('tagihan-spp.index')
+            ->with('success', 'Nominal tagihan SPP berhasil diperbarui.');
     }
 }

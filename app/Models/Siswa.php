@@ -17,7 +17,8 @@ class Siswa extends Model
         'jenis_kelamin',
         'email',
         'no_telp',
-        'alamat'
+        'alamat',
+        'status'
     ];
 
     public function kelas()

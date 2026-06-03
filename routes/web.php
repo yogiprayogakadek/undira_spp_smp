@@ -9,6 +9,7 @@ use App\Http\Controllers\Main\SiswaController;
 use App\Http\Controllers\Main\TagihanSppController;
 use App\Http\Controllers\Main\TarifSppController;
 use App\Http\Controllers\Main\UserController;
+use App\Http\Controllers\Main\KenaikanKelasController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(TagihanSppController::class)->prefix('/tagihan-spp')->name('tagihan-spp.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/generate', 'generate')->name('generate');
+        Route::put('/update/{id}', 'update')->name('update');
         Route::get('/get-kelas', 'getKelas')->name('get-kelas');
         Route::get('/get-siswa', 'getSiswa')->name('get-siswa');
     });
@@ -71,6 +73,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/panduan', [PanduanController::class, 'index'])->name('panduan.index');
+
+    Route::controller(KenaikanKelasController::class)->prefix('/kenaikan-kelas')->name('kenaikan-kelas.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/siswa', 'getSiswaByKelas')->name('get-siswa');
+        Route::post('/proses', 'proses')->name('proses');
+    });
 });
 
 

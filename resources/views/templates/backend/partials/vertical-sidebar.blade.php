@@ -88,6 +88,15 @@
                             @endif
                         </ul>
                     </li>
+
+                    @if(auth()->user()->role == 'admin')
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('kenaikan-kelas.index') }}" aria-expanded="false">
+                            <iconify-icon icon="solar:round-arrow-right-up-bold-duotone"></iconify-icon>
+                            <span class="hide-menu">Kenaikan Kelas</span>
+                        </a>
+                    </li>
+                    @endif
                     @endif
 
                     {{-- ======= KEUANGAN SPP ======= --}}

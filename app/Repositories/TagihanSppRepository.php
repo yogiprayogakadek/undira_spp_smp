@@ -8,13 +8,34 @@ class TagihanSppRepository
 {
     public function __construct(protected TagihanSpp $model) {}
 
-    public function getAll(array $fields = ['*'])
+    public function getAll(array $fields = ['*'], ?int $siswaId = null, ?int $kelasId = null, ?int $tingkat = null)
     {
-        return $this->model::select($fields)
-            ->with(['siswa.kelas', 'tarif'])
-            ->orderBy('tahun', 'desc')
-            ->orderBy('bulan', 'desc')
-            ->get();
+        $query = $this->model::select('tagihan_spp.*')
+            ->with(['siswa.kelas', 'tarif']);
+
+        if ($siswaId) {
+            $query->where('tagihan_spp.siswa_id', $siswaId);
+        }
+
+        if ($kelasId) {
+            $query->whereHas('siswa', function ($q) use ($kelasId) {
+                $q->where('kelas_id', $kelasId);
+            });
+        } elseif ($tingkat) {
+            $query->whereHas('siswa.kelas', function ($q) use ($tingkat) {
+                $q->where('tingkat', $tingkat);
+            });
+        }
+
+        $query->join('siswa', 'tagihan_spp.siswa_id', '=', 'siswa.id')
+            ->leftJoin('kelas', 'siswa.kelas_id', '=', 'kelas.id')
+            ->orderBy('kelas.tingkat', 'asc')
+            ->orderBy('kelas.nama', 'asc')
+            ->orderBy('siswa.nama_lengkap', 'asc')
+            ->orderBy('tagihan_spp.tahun', 'desc')
+            ->orderBy('tagihan_spp.bulan', 'desc');
+
+        return $query->get();
     }
 
     public function findById(array $fields, int $id)
@@ -48,6 +69,11 @@ class TagihanSppRepository
     public function updateStatus(int $id, string $status)
     {
         return $this->model::where('id', $id)->update(['status' => $status]);
+    }
+
+    public function update(int $id, array $data)
+    {
+        return $this->model::where('id', $id)->update($data);
     }
 
     public function delete(int $id)

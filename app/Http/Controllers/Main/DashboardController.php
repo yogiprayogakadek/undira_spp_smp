@@ -30,7 +30,18 @@ class DashboardController extends Controller
         $tingkatList = \Illuminate\Support\Facades\DB::table('kelas')->distinct()->orderBy('tingkat')->pluck('tingkat');
         $kelasList = \Illuminate\Support\Facades\DB::table('kelas')->orderBy('nama')->get();
 
-        return view('main.dashboard.index', compact('stats', 'role', 'user', 'tingkatList', 'kelasList'));
+        $activeTahunAjaran = \Illuminate\Support\Facades\DB::table('tarif_spp')->max('tahun_ajaran');
+        if (!$activeTahunAjaran) {
+            $currentYear = date('Y');
+            $currentMonth = date('n');
+            if ($currentMonth >= 7) {
+                $activeTahunAjaran = $currentYear . '/' . ($currentYear + 1);
+            } else {
+                $activeTahunAjaran = ($currentYear - 1) . '/' . $currentYear;
+            }
+        }
+
+        return view('main.dashboard.index', compact('stats', 'role', 'user', 'tingkatList', 'kelasList', 'activeTahunAjaran'));
     }
 
     public function getChartData(Request $request)

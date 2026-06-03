@@ -51,6 +51,21 @@
             border-radius: 20px;
             font-weight: 700;
         }
+        .badge-ta {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
     </style>
 @endpush
 
@@ -59,8 +74,9 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <span class="badge bg-white text-primary badge-role mb-2">{{ $role }}</span>
+                <span class="badge-ta mb-2 ms-2"><iconify-icon icon="solar:calendar-date-bold-duotone" class="align-middle"></iconify-icon> T.A. {{ $activeTahunAjaran }}</span>
                 <h2 class="fw-bold mb-1 border-0 text-white">Selamat Datang, {{ $user->profile->nama_lengkap ?? $user->email }}!</h2>
-                <p class="mb-0 opacity-75">Anda login sebagai <strong>{{ ucwords($role) }}</strong> di Sistem Pembayaran SPP SMPN 1 Mauponggo Satap.</p>
+                <p class="mb-0 opacity-75">Anda login sebagai <strong>{{ ucwords($role) }}</strong> di Sistem Pembayaran SPP SMPN 1 Mauponggo Satap. Tahun ajaran aktif: <strong>{{ $activeTahunAjaran }}</strong>.</p>
             </div>
             <div class="col-md-4 text-end d-none d-md-block">
                 <iconify-icon icon="solar:globus-bold-duotone" style="font-size: 80px; opacity: 0.2;"></iconify-icon>

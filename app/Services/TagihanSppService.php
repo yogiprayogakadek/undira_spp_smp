@@ -13,9 +13,9 @@ class TagihanSppService
         protected TarifSppRepository   $tarifSppRepository,
     ) {}
 
-    public function getAll(array $fields = ['*'])
+    public function getAll(array $fields = ['*'], ?int $siswaId = null, ?int $kelasId = null, ?int $tingkat = null)
     {
-        return $this->tagihanSppRepository->getAll($fields);
+        return $this->tagihanSppRepository->getAll($fields, $siswaId, $kelasId, $tingkat);
     }
 
     public function findById(array $fields, int $id)
@@ -68,6 +68,11 @@ class TagihanSppService
     public function updateStatus(int $id, string $status)
     {
         return $this->tagihanSppRepository->updateStatus($id, $status);
+    }
+
+    public function update(int $id, array $data)
+    {
+        return $this->tagihanSppRepository->update($id, $data);
     }
 
     public function delete(int $id)
