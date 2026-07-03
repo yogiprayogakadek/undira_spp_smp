@@ -160,14 +160,25 @@
                     <p class="card-subtitle mb-0 small text-muted">Rekap tagihan seluruh siswa</p>
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <select id="filter_tingkat" class="form-select form-select-sm border-light-subtle bg-light text-muted fw-semibold" style="width: 150px; border-radius: 8px; font-size: 13px;">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <select id="filter_tahun_ajaran" class="form-select form-select-sm border-light-subtle bg-light text-muted fw-semibold" style="width: 150px; border-radius: 8px; font-size: 13px;">
+                    <option value="">— Semua T.A. —</option>
+                    @foreach($tahunAjaranList as $ta)
+                        <option value="{{ $ta }}">{{ $ta }}</option>
+                    @endforeach
+                </select>
+                <select id="filter_semester" class="form-select form-select-sm border-light-subtle bg-light text-muted fw-semibold" style="width: 150px; border-radius: 8px; font-size: 13px;">
+                    <option value="">— Semua Semester —</option>
+                    <option value="ganjil">Ganjil</option>
+                    <option value="genap">Genap</option>
+                </select>
+                <select id="filter_tingkat" class="form-select form-select-sm border-light-subtle bg-light text-muted fw-semibold" style="width: 140px; border-radius: 8px; font-size: 13px;">
                     <option value="">— Semua Tingkat —</option>
                     <option value="7">Kelas 7</option>
                     <option value="8">Kelas 8</option>
                     <option value="9">Kelas 9</option>
                 </select>
-                <select id="filter_kelas" class="form-select form-select-sm border-light-subtle bg-light text-muted fw-semibold" style="width: 150px; border-radius: 8px; font-size: 13px;">
+                <select id="filter_kelas" class="form-select form-select-sm border-light-subtle bg-light text-muted fw-semibold" style="width: 140px; border-radius: 8px; font-size: 13px;">
                     <option value="">— Semua Kelas —</option>
                     @foreach($kelasList as $kelas)
                         <option value="{{ $kelas->id }}" data-tingkat="{{ $kelas->tingkat }}">{{ $kelas->nama }}</option>
@@ -183,6 +194,8 @@
                             <th class="fw-semibold" style="width:50px">No.</th>
                             <th class="fw-semibold">Siswa</th>
                             <th class="fw-semibold">Kelas</th>
+                            <th class="fw-semibold">Tahun Ajaran</th>
+                            <th class="fw-semibold">Semester</th>
                             <th class="fw-semibold">Periode</th>
                             <th class="fw-semibold">Nominal</th>
                             <th class="fw-semibold text-center">Status</th>
@@ -254,12 +267,19 @@
                         d.siswa_id = '{{ request('siswa_id') }}';
                         d.kelas_id = $('#filter_kelas').val();
                         d.tingkat = $('#filter_tingkat').val();
+                        d.tahun_ajaran = $('#filter_tahun_ajaran').val();
+                        d.semester = $('#filter_semester').val();
                     }
                 },
                 columns: [
                     { data:'DT_RowIndex', name:'DT_RowIndex', orderable:false, searchable:false, className:'text-center text-muted small' },
                     { data:'siswa_nama', name:'siswa_nama', render: d => `<span class="fw-semibold">${d}</span>` },
                     { data:'kelas_nama', name:'kelas_nama', render: d => `<span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 fw-semibold">${d}</span>` },
+                    { data:'tahun_ajaran', name:'tahun_ajaran', render: d => `<span class="badge bg-info-subtle text-info border border-info-subtle px-2 fw-semibold">${d}</span>` },
+                    { data:'semester', name:'semester', render: d => {
+                        const color = d === 'Ganjil' ? 'warning' : 'success';
+                        return `<span class="badge bg-${color}-subtle text-${color} border border-${color}-subtle px-2 fw-semibold">${d}</span>`;
+                    }},
                     { data:'bulan_label', name:'bulan_label', searchable:false },
                     { data:'nominal_fmt', name:'nominal', render: d => `<span class="fw-bold text-success small">${d}</span>` },
                     { data:'status_badge', name:'status', className:'text-center', orderable:false, searchable:false },
@@ -355,6 +375,10 @@
             }
 
             // Handle filter change
+            $('#filter_tahun_ajaran, #filter_semester').on('change', function () {
+                dt.ajax.reload();
+            });
+
             $('#filter_tingkat').on('change', function () {
                 updateFilterKelasOptions();
                 if (filterKelasSelect.value === '' && $('#filter_kelas').val() !== '') {

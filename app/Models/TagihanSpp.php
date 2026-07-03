@@ -20,6 +20,11 @@ class TagihanSpp extends Model
         'nominal' => 'decimal:2',
     ];
 
+    public function getSemesterAttribute(): string
+    {
+        return ($this->bulan >= 7 && $this->bulan <= 12) ? 'Ganjil' : 'Genap';
+    }
+
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_id', 'id');

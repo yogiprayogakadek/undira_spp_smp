@@ -8,7 +8,7 @@ class TagihanSppRepository
 {
     public function __construct(protected TagihanSpp $model) {}
 
-    public function getAll(array $fields = ['*'], ?int $siswaId = null, ?int $kelasId = null, ?int $tingkat = null)
+    public function getAll(array $fields = ['*'], ?int $siswaId = null, ?int $kelasId = null, ?int $tingkat = null, ?string $tahunAjaran = null, ?string $semester = null)
     {
         $query = $this->model::select('tagihan_spp.*')
             ->with(['siswa.kelas', 'tarif']);
@@ -25,6 +25,20 @@ class TagihanSppRepository
             $query->whereHas('siswa.kelas', function ($q) use ($tingkat) {
                 $q->where('tingkat', $tingkat);
             });
+        }
+
+        if ($tahunAjaran) {
+            $query->whereHas('tarif', function ($q) use ($tahunAjaran) {
+                $q->where('tahun_ajaran', $tahunAjaran);
+            });
+        }
+
+        if ($semester) {
+            if ($semester === 'ganjil') {
+                $query->whereBetween('tagihan_spp.bulan', [7, 12]);
+            } elseif ($semester === 'genap') {
+                $query->whereBetween('tagihan_spp.bulan', [1, 6]);
+            }
         }
 
         $query->join('siswa', 'tagihan_spp.siswa_id', '=', 'siswa.id')

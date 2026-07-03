@@ -20,12 +20,21 @@ class TagihanSppController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $tagihan = $this->tagihanSppService->getAll(['*'], $request->query('siswa_id'), $request->query('kelas_id'), $request->query('tingkat'));
+            $tagihan = $this->tagihanSppService->getAll(
+                ['*'],
+                $request->query('siswa_id'),
+                $request->query('kelas_id'),
+                $request->query('tingkat'),
+                $request->query('tahun_ajaran'),
+                $request->query('semester')
+            );
 
             return DataTables::of($tagihan)
                 ->addIndexColumn()
                 ->addColumn('siswa_nama', fn ($row) => $row->siswa?->nama_lengkap ?? '—')
                 ->addColumn('kelas_nama', fn ($row) => $row->siswa?->kelas?->nama ?? '—')
+                ->addColumn('tahun_ajaran', fn ($row) => $row->tarif?->tahun_ajaran ?? '—')
+                ->addColumn('semester', fn ($row) => $row->semester ?? '—')
                 ->addColumn('bulan_label', fn ($row) => \App\Models\TagihanSpp::namaBulan($row->bulan) . ' ' . $row->tahun)
                 ->addColumn('nominal_fmt', fn ($row) => 'Rp ' . number_format($row->nominal, 0, ',', '.'))
                 ->addColumn('status_badge', function ($row) {
@@ -55,8 +64,13 @@ class TagihanSppController extends Controller
             ['tingkat', 'asc'],
             ['nama', 'asc'],
         ]);
+        $tahunAjaranList = \DB::table('tarif_spp')
+            ->distinct()
+            ->orderBy('tahun_ajaran', 'desc')
+            ->pluck('tahun_ajaran')
+            ->toArray();
 
-        return view('main.tagihan_spp.index', compact('filteredSiswa', 'kelasList'));
+        return view('main.tagihan_spp.index', compact('filteredSiswa', 'kelasList', 'tahunAjaranList'));
     }
 
     public function getKelas(Request $request)

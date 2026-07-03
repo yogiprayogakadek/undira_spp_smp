@@ -31,7 +31,7 @@ class PembayaranSppSeeder extends Seeder
             // Ambil 2–4 tagihan belum bayar milik siswa ini
             $tagihan = TagihanSpp::where('siswa_id', $siswa->id)
                 ->where('status', 'belum_bayar')
-                ->where('tahun', $tahun)
+                ->orderBy('tahun')
                 ->orderBy('bulan')
                 ->take(rand(2, 4))
                 ->get();
