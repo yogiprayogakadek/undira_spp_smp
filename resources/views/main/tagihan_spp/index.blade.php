@@ -5,12 +5,22 @@
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/backend/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
     <style>
         .stat-card { border-radius:12px;border:none;transition:transform .2s,box-shadow .2s; }
         .stat-card:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.09); }
         .stat-icon { width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px; }
         .table thead th { font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:11px 13px; }
         .table tbody td { padding:11px 13px;vertical-align:middle; }
+        .select2-container--bootstrap-5 .select2-selection {
+            background-color: var(--bs-light) !important;
+            border-color: var(--bs-border-color-translucent) !important;
+            border-radius: 8px !important;
+            min-height: 38px !important;
+            display: flex;
+            align-items: center;
+        }
     </style>
 @endpush
 
@@ -73,9 +83,21 @@
             </div>
         </div>
         <div class="card-body px-4 py-3">
+            <div class="d-flex align-items-center gap-3 mb-3 bg-light p-2 px-3 border border-light-subtle" style="border-radius: 10px; width: fit-content;">
+                <span class="small fw-bold text-muted text-uppercase" style="font-size: 11px; letter-spacing: 0.5px;">Metode Pemilihan Siswa:</span>
+                <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input" type="radio" name="selection_method" id="method_class" value="class" checked style="cursor: pointer;">
+                    <label class="form-check-label small fw-semibold text-dark" for="method_class" style="cursor: pointer;">Berdasarkan Kelas</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input" type="radio" name="selection_method" id="method_direct" value="direct" style="cursor: pointer;">
+                    <label class="form-check-label small fw-semibold text-dark" for="method_direct" style="cursor: pointer;">Cari Nama Langsung</label>
+                </div>
+            </div>
+
             <form action="{{ route('tagihan-spp.generate') }}" method="POST" class="row g-3 align-items-end">
                 @csrf
-                <div class="col-md-3">
+                <div class="col-md-3 method-class-field">
                     <label for="tingkat" class="form-label fw-semibold small text-uppercase text-muted">Tingkat</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0 text-muted">
@@ -89,7 +111,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 method-class-field">
                     <label for="kelas_id" class="form-label fw-semibold small text-uppercase text-muted">Kelas</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0 text-muted">
@@ -100,16 +122,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" id="siswa_col">
                     <label for="siswa_id" class="form-label fw-semibold small text-uppercase text-muted">Siswa</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0 text-muted">
-                            <iconify-icon icon="solar:user-bold-duotone" style="font-size:18px"></iconify-icon>
-                        </span>
-                        <select name="siswa_id" id="siswa_id" class="form-select border-start-0 ps-0 bg-light" disabled>
-                            <option value="">— Pilih Siswa —</option>
-                        </select>
-                    </div>
+                    <select name="siswa_id" id="siswa_id" class="form-select bg-light" disabled required>
+                        <option value="">— Pilih Siswa —</option>
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label for="tahun_ajaran" class="form-label fw-semibold small text-uppercase text-muted">Tahun Ajaran</label>
@@ -257,6 +274,7 @@
 
 @push('script')
     <script src="{{ asset('assets/backend/js/jquery.dataTables.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         const allKelas = @json($kelasList->values());
         const allSiswa = @json($siswaList);
@@ -317,12 +335,64 @@
             const kelasSelect   = document.getElementById('kelas_id');
             const siswaSelect   = document.getElementById('siswa_id');
 
+            const methodClass   = document.getElementById('method_class');
+            const methodDirect  = document.getElementById('method_direct');
+            const classFields   = document.querySelectorAll('.method-class-field');
+            const siswaCol      = document.getElementById('siswa_col');
+
+            function initializeSiswaSelect2() {
+                $(siswaSelect).select2({
+                    theme: 'bootstrap-5',
+                    placeholder: methodDirect.checked ? '— Cari Nama Siswa —' : '— Pilih Siswa —',
+                    dropdownParent: $(siswaSelect).parent(),
+                    width: '100%'
+                });
+            }
+
+            function destroySiswaSelect2() {
+                if ($(siswaSelect).hasClass("select2-hidden-accessible")) {
+                    $(siswaSelect).select2('destroy');
+                }
+            }
+
+            function updateSiswaSelectionMode() {
+                destroySiswaSelect2();
+
+                if (methodClass.checked) {
+                    classFields.forEach(el => el.classList.remove('d-none'));
+                    siswaCol.className = 'col-md-3';
+
+                    tingkatSelect.value = '';
+                    kelasSelect.innerHTML = '<option value="">— Pilih Kelas —</option>';
+                    siswaSelect.innerHTML = '<option value="">— Pilih Siswa —</option>';
+                    kelasSelect.disabled = true;
+                    siswaSelect.disabled = true;
+                } else {
+                    classFields.forEach(el => el.classList.add('d-none'));
+                    siswaCol.className = 'col-md-6';
+
+                    siswaSelect.innerHTML = '<option value="">— Cari Nama Siswa —</option>';
+                    allSiswa.forEach(s => {
+                        const k = allKelas.find(c => c.id == s.kelas_id);
+                        const kelasLabel = k ? ` (${k.nama})` : '';
+                        siswaSelect.innerHTML += `<option value="${s.id}">${s.nama_lengkap}${kelasLabel}</option>`;
+                    });
+                    siswaSelect.disabled = false;
+
+                    initializeSiswaSelect2();
+                }
+            }
+
+            methodClass.addEventListener('change', updateSiswaSelectionMode);
+            methodDirect.addEventListener('change', updateSiswaSelectionMode);
+
             tingkatSelect.addEventListener('change', function () {
                 const tingkat = this.value;
                 kelasSelect.innerHTML = '<option value="">— Pilih Kelas —</option>';
                 siswaSelect.innerHTML = '<option value="">— Pilih Siswa —</option>';
                 kelasSelect.disabled  = true;
                 siswaSelect.disabled  = true;
+                destroySiswaSelect2();
 
                 if (tingkat) {
                     const filteredKelas = allKelas.filter(k => k.tingkat == tingkat);
@@ -337,6 +407,7 @@
                 const kelasId = this.value;
                 siswaSelect.innerHTML = '<option value="">— Pilih Siswa —</option>';
                 siswaSelect.disabled  = true;
+                destroySiswaSelect2();
 
                 if (kelasId) {
                     const filteredSiswa = allSiswa.filter(s => s.kelas_id == kelasId);
@@ -344,6 +415,7 @@
                         siswaSelect.innerHTML += `<option value="${s.id}">${s.nama_lengkap}</option>`;
                     });
                     siswaSelect.disabled = false;
+                    initializeSiswaSelect2();
                 }
             });
 
