@@ -258,6 +258,9 @@
 @push('script')
     <script src="{{ asset('assets/backend/js/jquery.dataTables.min.js') }}"></script>
     <script>
+        const allKelas = @json($kelasList->values());
+        const allSiswa = @json($siswaList);
+
         $(document).ready(function () {
             const dt = $('#table').DataTable({
                 processing: true, serverSide: true, searchDelay: 500,
@@ -309,7 +312,7 @@
                 document.getElementById('stat-lunas').textContent   = lunas;
             });
 
-            // Dependent Dropdown Logic
+            // Dependent Dropdown Logic (Client-side)
             const tingkatSelect = document.getElementById('tingkat');
             const kelasSelect   = document.getElementById('kelas_id');
             const siswaSelect   = document.getElementById('siswa_id');
@@ -322,14 +325,11 @@
                 siswaSelect.disabled  = true;
 
                 if (tingkat) {
-                    fetch(`{{ route('tagihan-spp.get-kelas') }}?tingkat=${tingkat}`)
-                        .then(r => r.json())
-                        .then(data => {
-                            data.forEach(k => {
-                                kelasSelect.innerHTML += `<option value="${k.id}">${k.nama}</option>`;
-                            });
-                            kelasSelect.disabled = false;
-                        });
+                    const filteredKelas = allKelas.filter(k => k.tingkat == tingkat);
+                    filteredKelas.forEach(k => {
+                        kelasSelect.innerHTML += `<option value="${k.id}">${k.nama}</option>`;
+                    });
+                    kelasSelect.disabled = false;
                 }
             });
 
@@ -339,14 +339,11 @@
                 siswaSelect.disabled  = true;
 
                 if (kelasId) {
-                    fetch(`{{ route('tagihan-spp.get-siswa') }}?kelas_id=${kelasId}`)
-                        .then(r => r.json())
-                        .then(data => {
-                            data.forEach(s => {
-                                siswaSelect.innerHTML += `<option value="${s.id}">${s.nama_lengkap}</option>`;
-                            });
-                            siswaSelect.disabled = false;
-                        });
+                    const filteredSiswa = allSiswa.filter(s => s.kelas_id == kelasId);
+                    filteredSiswa.forEach(s => {
+                        siswaSelect.innerHTML += `<option value="${s.id}">${s.nama_lengkap}</option>`;
+                    });
+                    siswaSelect.disabled = false;
                 }
             });
 

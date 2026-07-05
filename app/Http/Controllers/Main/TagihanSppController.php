@@ -69,8 +69,11 @@ class TagihanSppController extends Controller
             ->orderBy('tahun_ajaran', 'desc')
             ->pluck('tahun_ajaran')
             ->toArray();
+        $siswaList = \App\Models\Siswa::where('status', 'aktif')
+            ->orderBy('nama_lengkap')
+            ->get(['id', 'nama_lengkap', 'kelas_id']);
 
-        return view('main.tagihan_spp.index', compact('filteredSiswa', 'kelasList', 'tahunAjaranList'));
+        return view('main.tagihan_spp.index', compact('filteredSiswa', 'kelasList', 'tahunAjaranList', 'siswaList'));
     }
 
     public function getKelas(Request $request)
