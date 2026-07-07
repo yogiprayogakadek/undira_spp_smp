@@ -55,6 +55,27 @@ class TagihanSppController extends Controller
                     }
                     return '<button class="btn btn-warning btn-sm btn-edit text-white px-2 py-1 border-0 shadow-sm" data-id="'.$row->id.'" data-nominal="'.(float)$row->nominal.'" data-siswa="'.e($row->siswa?->nama_lengkap).'" data-periode="'.e(\App\Models\TagihanSpp::namaBulan($row->bulan) . ' ' . $row->tahun).'"><iconify-icon icon="solar:pen-bold" class="align-middle"></iconify-icon></button>';
                 })
+                ->filterColumn('siswa_nama', function ($query, $keyword) {
+                    $query->where('siswa.nama_lengkap', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('kelas_nama', function ($query, $keyword) {
+                    $query->where('kelas.nama', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('tahun_ajaran', function ($query, $keyword) {
+                    $query->where('tarif_spp.tahun_ajaran', 'like', "%{$keyword}%");
+                })
+                ->filterColumn('semester', function ($query, $keyword) {
+                    $lowerKeyword = strtolower($keyword);
+                    if (str_contains('ganjil', $lowerKeyword)) {
+                        $query->whereBetween('tagihan_spp.bulan', [7, 12]);
+                    } elseif (str_contains('genap', $lowerKeyword)) {
+                        $query->whereBetween('tagihan_spp.bulan', [1, 6]);
+                    }
+                })
+                ->orderColumn('siswa_nama', 'siswa.nama_lengkap $1')
+                ->orderColumn('kelas_nama', 'kelas.nama $1')
+                ->orderColumn('tahun_ajaran', 'tarif_spp.tahun_ajaran $1')
+                ->orderColumn('semester', 'tagihan_spp.bulan $1')
                 ->rawColumns(['status_badge', 'actions'])
                 ->make(true);
         }

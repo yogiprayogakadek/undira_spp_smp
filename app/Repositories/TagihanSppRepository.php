@@ -41,13 +41,14 @@ class TagihanSppRepository
 
         $query->join('siswa', 'tagihan_spp.siswa_id', '=', 'siswa.id')
             ->leftJoin('kelas', 'tagihan_spp.kelas_id', '=', 'kelas.id')
+            ->join('tarif_spp', 'tagihan_spp.tarif_spp_id', '=', 'tarif_spp.id')
             ->orderBy('kelas.tingkat', 'asc')
             ->orderBy('kelas.nama', 'asc')
             ->orderBy('siswa.nama_lengkap', 'asc')
             ->orderBy('tagihan_spp.tahun', 'desc')
             ->orderBy('tagihan_spp.bulan', 'desc');
 
-        return $query->get();
+        return $query;
     }
 
     public function findById(array $fields, int $id)
