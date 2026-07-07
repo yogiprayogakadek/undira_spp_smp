@@ -36,7 +36,7 @@ class TagihanSppService
     /**
      * Generate tagihan untuk satu siswa selama setahun (12 bulan dari Juli ke Juni).
      */
-    public function generateTahunan(int $siswaId, int $tingkat, int $tahun, string $tahunAjaran): array
+    public function generateTahunan(int $siswaId, int $kelasId, int $tingkat, int $tahun, string $tahunAjaran): array
     {
         $tarif = $this->tarifSppRepository->findByTingkatTahun($tingkat, $tahunAjaran);
 
@@ -74,6 +74,7 @@ class TagihanSppService
 
             $tagihan = $this->tagihanSppRepository->create([
                 'siswa_id'     => $siswaId,
+                'kelas_id'     => $kelasId,
                 'tarif_spp_id' => $tarif->id,
                 'bulan'        => $bulan,
                 'tahun'        => $tahunBulan,

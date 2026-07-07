@@ -57,6 +57,7 @@ class TagihanSppSeeder extends Seeder
 
                 $rows[] = [
                     'siswa_id'     => $siswa->id,
+                    'kelas_id'     => $siswa->kelas_id,
                     'tarif_spp_id' => $tarif->id,
                     'bulan'        => $bulan,
                     'tahun'        => $tahunBulan,

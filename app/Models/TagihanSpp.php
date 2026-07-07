@@ -3,12 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class TagihanSpp extends Model
 {
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->kelas_id) && !empty($model->siswa_id)) {
+                $siswa = DB::table('siswa')->where('id', $model->siswa_id)->first();
+                if ($siswa) {
+                    $model->kelas_id = $siswa->kelas_id;
+                }
+            }
+        });
+    }
+
     protected $table = 'tagihan_spp';
     protected $fillable = [
         'siswa_id',
+        'kelas_id',
         'tarif_spp_id',
         'bulan',
         'tahun',
@@ -28,6 +44,11 @@ class TagihanSpp extends Model
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_id', 'id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
 
     public function tarif()

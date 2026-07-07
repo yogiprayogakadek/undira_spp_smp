@@ -116,6 +116,7 @@ class KenaikanKelasController extends Controller
                 foreach ($siswaIds as $siswaId) {
                     $this->tagihanSppService->generateTahunan(
                         $siswaId,
+                        $kelasTujuan->id,
                         $tingkatTujuan,
                         $tahun,
                         $tahunAjaranBaru

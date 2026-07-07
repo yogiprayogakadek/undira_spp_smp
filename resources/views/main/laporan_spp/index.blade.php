@@ -96,7 +96,7 @@
                             <tr>
                                 <td class="px-4">{{ $loop->iteration }}</td>
                                 <td class="fw-semibold">{{ $row->siswa->nama_lengkap }}</td>
-                                <td>{{ $row->siswa->kelas->nama }}</td>
+                                <td>{{ $row->kelas?->nama ?? '—' }}</td>
                                 <td>{{ $row->tarif->tahun_ajaran }}</td>
                                 <td class="text-end fw-bold">Rp {{ number_format($row->nominal, 0, ',', '.') }}</td>
                                 <td class="text-center">

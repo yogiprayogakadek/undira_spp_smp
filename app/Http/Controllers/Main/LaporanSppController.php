@@ -27,22 +27,20 @@ class LaporanSppController extends Controller
             'status'       => 'nullable|in:lunas,sebagian,belum_bayar',
         ]);
 
-        $query = TagihanSpp::with(['siswa.kelas', 'tarif'])
+        $query = TagihanSpp::with(['siswa.kelas', 'tarif', 'kelas'])
             ->whereHas('tarif', function ($q) use ($request) {
                 $q->where('tahun_ajaran', $request->tahun_ajaran);
             })
             ->where('bulan', $request->bulan);
 
         if ($request->tingkat) {
-            $query->whereHas('siswa.kelas', function ($q) use ($request) {
+            $query->whereHas('kelas', function ($q) use ($request) {
                 $q->where('tingkat', $request->tingkat);
             });
         }
 
         if ($request->kelas_id) {
-            $query->whereHas('siswa', function ($q) use ($request) {
-                $q->where('kelas_id', $request->kelas_id);
-            });
+            $query->where('kelas_id', $request->kelas_id);
         }
 
         if ($request->status) {
@@ -63,22 +61,20 @@ class LaporanSppController extends Controller
 
     public function print(Request $request)
     {
-        $query = TagihanSpp::with(['siswa.kelas', 'tarif'])
+        $query = TagihanSpp::with(['siswa.kelas', 'tarif', 'kelas'])
             ->whereHas('tarif', function ($q) use ($request) {
                 $q->where('tahun_ajaran', $request->tahun_ajaran);
             })
             ->where('bulan', $request->bulan);
 
         if ($request->tingkat) {
-            $query->whereHas('siswa.kelas', function ($q) use ($request) {
+            $query->whereHas('kelas', function ($q) use ($request) {
                 $q->where('tingkat', $request->tingkat);
             });
         }
 
         if ($request->kelas_id) {
-            $query->whereHas('siswa', function ($q) use ($request) {
-                $q->where('kelas_id', $request->kelas_id);
-            });
+            $query->where('kelas_id', $request->kelas_id);
         }
 
         if ($request->status) {

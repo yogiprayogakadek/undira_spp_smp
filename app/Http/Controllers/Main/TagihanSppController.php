@@ -32,7 +32,7 @@ class TagihanSppController extends Controller
             return DataTables::of($tagihan)
                 ->addIndexColumn()
                 ->addColumn('siswa_nama', fn ($row) => $row->siswa?->nama_lengkap ?? '—')
-                ->addColumn('kelas_nama', fn ($row) => $row->siswa?->kelas?->nama ?? '—')
+                ->addColumn('kelas_nama', fn ($row) => $row->kelas?->nama ?? '—')
                 ->addColumn('tahun_ajaran', fn ($row) => $row->tarif?->tahun_ajaran ?? '—')
                 ->addColumn('semester', fn ($row) => $row->semester ?? '—')
                 ->addColumn('bulan_label', fn ($row) => \App\Models\TagihanSpp::namaBulan($row->bulan) . ' ' . $row->tahun)
@@ -114,6 +114,7 @@ class TagihanSppController extends Controller
         try {
             $generated = $this->tagihanSppService->generateTahunan(
                 $siswa->id,
+                $siswa->kelas_id,
                 $siswa->kelas->tingkat,
                 $tahun,
                 $request->tahun_ajaran

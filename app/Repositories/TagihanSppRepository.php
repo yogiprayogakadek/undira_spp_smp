@@ -11,18 +11,16 @@ class TagihanSppRepository
     public function getAll(array $fields = ['*'], ?int $siswaId = null, ?int $kelasId = null, ?int $tingkat = null, ?string $tahunAjaran = null, ?string $semester = null)
     {
         $query = $this->model::select('tagihan_spp.*')
-            ->with(['siswa.kelas', 'tarif']);
+            ->with(['siswa.kelas', 'tarif', 'kelas']);
 
         if ($siswaId) {
             $query->where('tagihan_spp.siswa_id', $siswaId);
         }
 
         if ($kelasId) {
-            $query->whereHas('siswa', function ($q) use ($kelasId) {
-                $q->where('kelas_id', $kelasId);
-            });
+            $query->where('tagihan_spp.kelas_id', $kelasId);
         } elseif ($tingkat) {
-            $query->whereHas('siswa.kelas', function ($q) use ($tingkat) {
+            $query->whereHas('kelas', function ($q) use ($tingkat) {
                 $q->where('tingkat', $tingkat);
             });
         }
@@ -42,7 +40,7 @@ class TagihanSppRepository
         }
 
         $query->join('siswa', 'tagihan_spp.siswa_id', '=', 'siswa.id')
-            ->leftJoin('kelas', 'siswa.kelas_id', '=', 'kelas.id')
+            ->leftJoin('kelas', 'tagihan_spp.kelas_id', '=', 'kelas.id')
             ->orderBy('kelas.tingkat', 'asc')
             ->orderBy('kelas.nama', 'asc')
             ->orderBy('siswa.nama_lengkap', 'asc')

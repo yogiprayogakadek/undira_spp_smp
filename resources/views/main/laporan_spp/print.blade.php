@@ -196,7 +196,7 @@
                 <tr>
                     <td style="text-align: center;">{{ $loop->iteration }}</td>
                     <td>{{ $row->siswa->nama_lengkap }}</td>
-                    <td style="text-align: center;">{{ $row->siswa->kelas->nama }}</td>
+                    <td style="text-align: center;">{{ $row->kelas?->nama ?? '—' }}</td>
                     <td style="text-align: center;">{{ $row->tarif->tahun_ajaran }}</td>
                     <td style="text-align: right;">Rp {{ number_format($row->nominal, 0, ',', '.') }}</td>
                     <td style="text-align: center;">
